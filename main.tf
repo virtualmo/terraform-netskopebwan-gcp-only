@@ -86,18 +86,6 @@ module "gcp_compute" {
   secondary_gw_data       = merge(local.nsg_config.secondary, local.userdata.secondary)
 }
 
-module "bgp_config" {
-  source                  = "./modules/bgp_config"
-  gcp_profile             = var.gcp_profile
-  gcp_compute             = var.gcp_compute
-  netskope_tenant         = var.netskope_tenant
-  gcp_ncc_config          = merge(var.gcp_ncc_config, local.cloud_router_config)
-  gcp_network_config      = merge(var.gcp_network_config, module.gcp_vpc.gcp_vpc_output)
-  netskope_gateway_config = merge(var.netskope_gateway_config, local.nsg_config, local.userdata)
-  primary_gw_data         = merge(local.nsg_config.primary, local.userdata.primary)
-  secondary_gw_data       = merge(local.nsg_config.secondary, local.userdata.secondary)
-}
-
 module "clients" {
   source          = "./modules/clients"
   count           = var.clients.create_clients ? 1 : 0
